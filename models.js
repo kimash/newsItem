@@ -11,7 +11,7 @@ module.exports.configureSchema = function(Schema, mongoose) {
     // newsItem - 
     var newsItem = new Schema({
       title     : String
-    , location   : String
+    , urlslug   : String
     , content   : String
     , date      : { type: Date, default: Date.now }
     , comments  : [Comments]

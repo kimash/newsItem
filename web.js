@@ -83,10 +83,10 @@ app.get('/', function(request, response) {
 
 
 // Display a single blog post
-app.get('/entry/:location',function(request, response){
+app.get('/entry/:urlslug',function(request, response){
     
-    // Get the request blog post by location
-    newsItem.findOne({ location : request.params.location },function(err, blogpost){
+    // Get the request blog post by urlslug
+    newsItem.findOne({ urlslug : request.params.urlslug },function(err, blogpost){
         
         if (err) {
             console.log(err);
@@ -142,11 +142,11 @@ app.get("/entryById/:postId", function(request, response) {
 // add a comment to a blog post
 app.post('/comment', function(request, response){
     
-    // get the comment form's hidden value - location
-    var location = request.body.location;
+    // get the comment form's hidden value - urlslug
+    var urlslug = request.body.urlslug;
     
-    // Query for the blog post with matching location
-    newsItem.findOne({location:location}, function(err,post){
+    // Query for the blog post with matching urlslug
+    newsItem.findOne({urlslug:urlslug}, function(err,post){
         // if there was an error...
         if (err) {
             console.log('There was an error');
@@ -172,7 +172,7 @@ app.post('/comment', function(request, response){
         post.save();
         
         // redirect to the blog entry
-        response.redirect('/entry/' + location);
+        response.redirect('/entry/' + urlslug);
 
     });
     
@@ -199,7 +199,7 @@ app.post('/new-entry', function(request, response){
     // Prepare the blog post entry form into a data object
     var blogPostData = {
         title : request.body.title,
-        location : request.body.location,
+        urlslug : request.body.urlslug,
         content : request.body.content,
         author : {
             name : request.body.name,
@@ -214,7 +214,7 @@ app.post('/new-entry', function(request, response){
     post.save();
     
     // redirect to show the single post
-    response.redirect('/entry/' + blogPostData.location); // for example /entry/this-is-a-post
+    response.redirect('/entry/' + blogPostData.urlslug); // for example /entry/this-is-a-post
     
 });
 
