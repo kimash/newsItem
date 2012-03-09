@@ -80,9 +80,9 @@ app.post('/new-entry', function(request, response){
     };
 
     // create a new blog post
-    // BlogPost is a Mongoose data model and defined at the top of web.js
-    // BlogPost can accept a data object that is defined in model.js
-    var post = new BlogPost(blogPostData);
+    // newsItem is a Mongoose data model and defined at the top of web.js
+    // newsItem can accept a data object that is defined in model.js
+    var post = new newsItem(blogPostData);
 
     // save the blog post entry - that's it.
     post.save();

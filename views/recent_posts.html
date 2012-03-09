@@ -37,7 +37,7 @@
                 lastWeek.setDate(-7);
 
                 // query for all blog posts where the date is greater than or equal to 7 days ago
-                var query = BlogPost.find({ date : { $gte: lastWeek }});
+                var query = newsItem.find({ date : { $gte: lastWeek }});
 
                 query.sort('date',-1);
                 query.exec(function (err, recentPosts) {

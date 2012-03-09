@@ -84,7 +84,7 @@
 app.get('/entry/:urlslug',function(request, response){
 
     // Get the request blog post by urlslug
-    BlogPost.findOne({urlslug:request.params.urlslug},function(err,post){
+    newsItem.findOne({urlslug:request.params.urlslug},function(err,post){
         if (err) {
             console.log('error');
             console.log(err);
@@ -106,7 +106,7 @@ app.get('/entry/:urlslug',function(request, response){
 
                 var requestedPostID = request.params.postId;
 
-                BlogPost.findById( requestedPostID, function(err, blogpost) {
+                newsItem.findById( requestedPostID, function(err, blogpost) {
 
                     if (err) {
                         console.log(err);
@@ -148,7 +148,7 @@ app.post('/comment', function(request, response){
     var urlslug = request.body.urlslug;
     
     // Query for the blog post with matching urlslug
-    BlogPost.findOne({urlslug:urlslug}, function(err,post){
+    newsItem.findOne({urlslug:urlslug}, function(err,post){
         
         // if there was an error...
         if (err) {

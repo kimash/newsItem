@@ -74,7 +74,7 @@ app.get("/update/:postId", function(request, response){
     var requestedPostID = request.params.postId;
     
     // find the requested document
-    BlogPost.findById( requestedPostID, function(err, blogpost) {
+    newsItem.findById( requestedPostID, function(err, blogpost) {
         
         if (err) {
             console.log(err);
@@ -107,7 +107,7 @@ app.post("/update", function(request, response){
     // update post body should have form element called blog_post_id
     var postid = request.body.blog_post_id;
 
-    // we are looking for the BlogPost document where _id == postid
+    // we are looking for the newsItem document where _id == postid
     var condition = { _id : postid };
     
     // update these fields with new values
@@ -128,7 +128,7 @@ app.post("/update", function(request, response){
     // include data to update with 'updatedData'
     // extra options - this time we only want a single doc to update
     // after updating run the callback function - return err and numAffected
-    BlogPost.update( condition, updatedData, options, function(err, numAffected){
+    newsItem.update( condition, updatedData, options, function(err, numAffected){
         
         if (err) {
             console.log('Update Error Occurred');

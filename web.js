@@ -13,7 +13,7 @@ app.db = mongoose.connect(process.env.MONGOLAB_URI); //connect to the mongolabs 
 require('./models').configureSchema(schema, mongoose);
 
 // Define your DB Model variables
-var BlogPost = mongoose.model('BlogPost');
+var newsItem = mongoose.model('newsItem');
 var Comment = mongoose.model('Comment');
 /************* END DATABASE CONFIGURATION *********/
 
@@ -62,7 +62,7 @@ app.configure(function() {
 app.get('/', function(request, response) {
 
     // build the query
-    var query = BlogPost.find({});
+    var query = newsItem.find({});
     query.sort('date',-1); //sort by date in descending order
     
     // run the query and display blog_main.html template if successful
@@ -83,10 +83,10 @@ app.get('/', function(request, response) {
 
 
 // Display a single blog post
-app.get('/entry/:urlslug',function(request, response){
+app.get('/entry/:location',function(request, response){
     
-    // Get the request blog post by urlslug
-    BlogPost.findOne({ urlslug : request.params.urlslug },function(err, blogpost){
+    // Get the request blog post by location
+    newsItem.findOne({ location : request.params.location },function(err, blogpost){
         
         if (err) {
             console.log(err);
@@ -114,7 +114,7 @@ app.get("/entryById/:postId", function(request, response) {
     
     var requestedPostID = request.params.postId;
     
-    BlogPost.findById( requestedPostID, function(err, blogpost) {
+    newsItem.findById( requestedPostID, function(err, blogpost) {
         
         if (err) {
             console.log(err);
@@ -142,11 +142,11 @@ app.get("/entryById/:postId", function(request, response) {
 // add a comment to a blog post
 app.post('/comment', function(request, response){
     
-    // get the comment form's hidden value - urlslug
-    var urlslug = request.body.urlslug;
+    // get the comment form's hidden value - location
+    var location = request.body.location;
     
-    // Query for the blog post with matching urlslug
-    BlogPost.findOne({urlslug:urlslug}, function(err,post){
+    // Query for the blog post with matching location
+    newsItem.findOne({location:location}, function(err,post){
         // if there was an error...
         if (err) {
             console.log('There was an error');
@@ -172,7 +172,7 @@ app.post('/comment', function(request, response){
         post.save();
         
         // redirect to the blog entry
-        response.redirect('/entry/' + urlslug);
+        response.redirect('/entry/' + location);
 
     });
     
@@ -199,7 +199,7 @@ app.post('/new-entry', function(request, response){
     // Prepare the blog post entry form into a data object
     var blogPostData = {
         title : request.body.title,
-        urlslug : request.body.urlslug,
+        location : request.body.location,
         content : request.body.content,
         author : {
             name : request.body.name,
@@ -208,13 +208,13 @@ app.post('/new-entry', function(request, response){
     };
     
     // create a new blog post
-    var post = new BlogPost(blogPostData);
+    var post = new newsItem(blogPostData);
     
     // save the blog post
     post.save();
     
     // redirect to show the single post
-    response.redirect('/entry/' + blogPostData.urlslug); // for example /entry/this-is-a-post
+    response.redirect('/entry/' + blogPostData.location); // for example /entry/this-is-a-post
     
 });
 
@@ -225,7 +225,7 @@ app.get("/recent", function(request, response){
     lastWeek.setDate(-7);
     
     // query for all blog posts where the date is greater than or equal to 7 days ago
-    var query = BlogPost.find({ date : { $gte: lastWeek }});
+    var query = newsItem.find({ date : { $gte: lastWeek }});
 
     query.sort('date',-1);
     query.exec(function (err, recentPosts) {
@@ -247,7 +247,7 @@ app.get("/entryById/:postId", function(request, response) {
     
     var requestedPostID = request.params.postId;
     
-    BlogPost.findById( requestedPostID, function(err, blogpost) {
+    newsItem.findById( requestedPostID, function(err, blogpost) {
         
         if (err) {
             console.log(err);
@@ -278,7 +278,7 @@ app.get("/update/:postId", function(request, response){
     var requestedPostID = request.params.postId;
     
     // find the requested document
-    BlogPost.findById( requestedPostID, function(err, blogpost) {
+    newsItem.findById( requestedPostID, function(err, blogpost) {
         
         if (err) {
             console.log(err);
@@ -311,7 +311,7 @@ app.post("/update", function(request, response){
     // update post body should have form element called blog_post_id
     var postid = request.body.blog_post_id;
 
-    // we are looking for the BlogPost document where _id == postid
+    // we are looking for the newsItem document where _id == postid
     var condition = { _id : postid };
     
     // update these fields with new values
@@ -332,7 +332,7 @@ app.post("/update", function(request, response){
     // include data to update with 'updatedData'
     // extra options - this time we only want a single doc to update
     // after updating run the callback function - return err and numAffected
-    BlogPost.update( condition, updatedData, options, function(err, numAffected){
+    newsItem.update( condition, updatedData, options, function(err, numAffected){
         
         if (err) {
             console.log('Update Error Occurred');

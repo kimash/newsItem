@@ -38,7 +38,7 @@
 app.get('/', function(request, response) {
 
     // build the query
-    var query = BlogPost.find({});
+    var query = newsItem.find({});
     query.sort('date',-1); //sort by date in descending order
 
     // run the query and display blog_main.html template if successful
