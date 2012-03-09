@@ -1,7 +1,7 @@
 <% if (updated) { %>
     <br>
     <div class="alert alert-success">
-        Blog post updated successfully - <a href="/entryById/<%= blogpost._id %>">View post</a>
+        post updated successfully - <a href="/entryById/<%= blogpost._id %>">View post</a>
     </div>
 <% } %>
 
@@ -12,7 +12,7 @@
     <input type="hidden" name="blog_post_id" value="<%= blogpost._id %>">
     
     <fieldset>
-        <legend>Blog Post Entry Form</legend>
+        <legend>Post a Newsbit</legend>
         <div class="control-group">
             <label class="control-label" for="title">Title</label>
             <div class="controls">

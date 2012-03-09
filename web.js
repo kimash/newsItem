@@ -70,7 +70,7 @@ app.get('/', function(request, response) {
         
         // prepare template data
         templateData = {
-            posts : allPosts
+            posts : allPosts	//holds everything returned by query
         };
         
         // render the card_form template with the data above
