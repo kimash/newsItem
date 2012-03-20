@@ -355,6 +355,28 @@ app.post("/update", function(request, response){
     
 });
 
+// return all blog entries in json format
+app.get('/data/allposts', function(request, response){
+
+    // define the fields you want to include in your json data
+    includeFields = ['title','content','location','urlslug','refurl','date','comments','author.name']
+
+    // query for all blog
+    queryConditions = {}; //empty conditions - return everything
+    var query = newsItem.find( queryConditions, includeFields);
+
+    query.sort('date',-1); //sort by most recent
+    query.exec(function (err, newsItems) {
+
+        // render the card_form template with the data above
+        jsonData = {
+          'status' : 'OK',
+          'posts' : newsItems
+        }
+
+        response.json(jsonData);
+    });
+});
 
 // Make server turn on and listen at defined PORT (or port 3000 if is not defined)
 var port = process.env.PORT || 3000;
