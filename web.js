@@ -320,6 +320,7 @@ app.post("/update", function(request, response){
     var updatedData = {
         title : request.body.title,
         location: request.body.location,
+        refurl	: request.body.refurl,
         content : request.body.content,
         author : {
             name : request.body.name,
