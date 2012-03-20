@@ -1,5 +1,7 @@
 body { 
-    background: #F0FFFF;
+    background: #d0d3ff;
+    background-image: url("../img/NYC2.jpg");
+    background-repeat: repeat-x;
     color: #2F4F4F;
 }
 
@@ -44,6 +46,7 @@ small {
 }
 
 .container {
-	
+	background: #F0FFFF;
+	padding: 20px;
 }
 
