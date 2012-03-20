@@ -12,11 +12,18 @@
     <input type="hidden" name="blog_post_id" value="<%= blogpost._id %>">
     
     <fieldset>
-        <legend>Post a Newsbit</legend>
+        <legend>Update this Newsbit</legend>
         <div class="control-group">
             <label class="control-label" for="title">Title</label>
             <div class="controls">
                 <input type="text" name="title" id="title" value="<%= blogpost.title %>">
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label class="control-label" for="location">Location</label>
+            <div class="controls">
+                <input type="text" name="location" id="location" value="<%= blogpost.location %>">
             </div>
         </div>
 
@@ -27,9 +34,17 @@
                 <p class="help-block">The url slug for this blog entry, the ending of the URL. ie 'http://localhost:5000/entry/<b><u>the-itp-story</u></b>'</p>
             </div>
         </div>
+        
+        <div class="control-group">
+            <label class="control-label" for="refurl">Source URL</label>
+            <div class="controls">
+                <input type="text" name="refurl" id="refurl" value="<%= blogpost.refurl %>">
+                <p class="help-block">If this comes from a news source on the web, please cite the URL here.</p>
+            </div>
+        </div>
 
         <div class="control-group">
-            <label class="control-label" for="content">Entry content</label>
+            <label class="control-label" for="content">News content</label>
             <div class="controls">
                 <textarea class="input-xlarge" id="content" name="content" rows="6" cols="50"><%= blogpost.content %></textarea>
             </div>
@@ -60,93 +75,3 @@
 
 
 <!-- THIS SECTION IS FOR INSTRUCTIONAL PURPOSES -->
-<div class="row">
-
-    <div class="span10">
-        <h3>Code sample - How to update a blog post</h3>
-        <pre>
-// web.js
-// how to update a blog post
-
-app.get("/update/:postId", function(request, response){
-    
-    // get the request blog post id
-    var requestedPostID = request.params.postId;
-    
-    // find the requested document
-    newsItem.findById( requestedPostID, function(err, blogpost) {
-        
-        if (err) {
-            console.log(err);
-            response.send("an error occurred!");
-        }
-        
-        if (blogpost == null ) {
-            console.log('post not found');
-            response.send("uh oh, can't find that post");
-
-        } else {
-            
-            // prepare template data
-            // blogpost data & updated (was this entry updated ?update=true)
-            templateData = {
-                blogpost : blogpost,
-                updated : request.query.update
-            };
-            
-            // found the blogpost
-            response.render('blog_post_entry_update.html', templateData);
-        }
-        
-    })
-    
-});
-
-app.post("/update", function(request, response){
-    
-    // update post body should have form element called blog_post_id
-    var postid = request.body.blog_post_id;
-
-    // we are looking for the newsItem document where _id == postid
-    var condition = { _id : postid };
-    
-    // update these fields with new values
-    var updatedData = {
-        title : request.body.title,
-        content : request.body.content,
-        author : {
-            name : request.body.name,
-            email : request.body.email
-        }
-    };
-    
-    // we only want to update a single document
-    var options = { multi : false };
-    
-    // Perform the document update
-    // find the document with 'condition'
-    // include data to update with 'updatedData'
-    // extra options - this time we only want a single doc to update
-    // after updating run the callback function - return err and numAffected
-    newsItem.update( condition, updatedData, options, function(err, numAffected){
-        
-        if (err) {
-            console.log('Update Error Occurred');
-            response.send('Update Error Occurred ' + err);
-
-        } else {
-            
-            console.log("update succeeded");
-            console.log(numAffected + " document(s) updated");
-            
-            //redirect the user to the update page - append ?update=true to URL
-            response.redirect('/update/' + postid + "?update=true");
-            
-        }
-    });
-    
-})
-        </pre>
-    </div>
-
-</div>

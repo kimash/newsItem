@@ -13,6 +13,7 @@ module.exports.configureSchema = function(Schema, mongoose) {
       title     : String
     , urlslug   : String
     , location	: String
+    , refurl	: String
     , content   : String
     , date      : { type: Date, default: Date.now }
     , comments  : [Comments]

@@ -199,7 +199,9 @@ app.post('/new-entry', function(request, response){
     // Prepare the blog post entry form into a data object
     var blogPostData = {
         title : request.body.title,
+        location : request.body.location,
         urlslug : request.body.urlslug,
+        refurl	: request.body.refurl,
         content : request.body.content,
         author : {
             name : request.body.name,
@@ -317,6 +319,7 @@ app.post("/update", function(request, response){
     // update these fields with new values
     var updatedData = {
         title : request.body.title,
+        location: request.body.location,
         content : request.body.content,
         author : {
             name : request.body.name,
