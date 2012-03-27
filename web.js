@@ -5,7 +5,7 @@ var app = express.createServer(express.logger());
 
 var mongoose = require('mongoose'); // include Mongoose MongoDB library
 var schema = mongoose.Schema; 
-
+var requestURL = require('request');
 /************ DATABASE CONFIGURATION **********/
 app.db = mongoose.connect(process.env.MONGOLAB_URI); //connect to the mongolabs database - local server uses .env file
 
@@ -382,4 +382,40 @@ app.get('/data/allposts', function(request, response){
 var port = process.env.PORT || 3000;
 app.listen(port, function() {
   console.log('Listening on ' + port);
+});
+
+app.get('/events',function(request, response) {
+
+    // define the remote JSON feed
+    eventsURL= "http://betherenyc.herokuapp.com/api/allevents/"; //pretend this url is actually on another server
+
+    // make the request
+    requestURL(eventsURL, function(error, httpResponse, data) {
+        //if there is an error
+        if (error) {
+            console.error(error);
+            response.send("Sorry, this page is not available.");
+        }
+
+        // if successful HTTP 200 response
+        if (httpResponse.statusCode == 200) {
+
+            //convert JSON into native javascript
+            eventsData = JSON.parse(data);
+
+            if (blogPostData.status == "OK") {
+                events = eventsData.events;
+
+                //render template with remote data
+                templateData = {
+                    eventsPosts : events, 
+                    source_url : eventsURL   
+                }
+                response.render("events.html",templateData)
+            } else {
+
+                response.send("blog post JSON status != OK");
+            }
+        }
+    });
 });
